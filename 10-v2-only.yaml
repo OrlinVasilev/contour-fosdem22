@@ -1,0 +1,28 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: fosdem
+  namespace: fosdem
+spec:
+  routes:
+    - services:
+        - name: web-v1
+          port: 80
+          weight: 0
+        - name: web-v2
+          port: 80
+          weight: 100
+
+# OR Just
+
+# apiVersion: projectcontour.io/v1
+# kind: HTTPProxy
+# metadata:
+#   name: fosdem
+#   namespace: fosdem
+# spec:
+#   routes:
+#     - services:
+#         - name: web-v2
+#           port: 80
+#           weight: 100

@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fosdem
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v2
+  namespace: fosdem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-v2
+  template:
+    metadata:
+      labels:
+        app: web-v2
+    spec:
+      containers:
+        - name: web-v2
+          image: orlix/fosdem
+          command: ["echo-server"]
+          args:
+            - --echotext=V2 FOSDEM22
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+      #Thank you Steve Sloka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: web-v2
+  name: web-v2
+  namespace: fosdem
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: web-v2
+  type: ClusterIP
