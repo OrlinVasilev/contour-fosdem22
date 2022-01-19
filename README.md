@@ -21,24 +21,24 @@ kubectl apply -f 01-main.yaml
 ```
 
 ## Create HTTPProxy for local.projectcontour.io
-```
+```console
 kubectl apply -f 02-proxy-main.yaml
 ```
 
 ### In second terminal
-```
+```console
 while true; do curl -s local.projectcontour.io|grep FOSDEM ; sleep 0.2 ; done
 ```
 
 ## Create fosdem namespace and web-v1 deployments
-```
-k apply -f 03-fosdem.yaml
+```console
+kubectl apply -f 03-fosdem.yaml
 ```
 
 ## Tune the root HTTPproxy to delagate /fosdem to local.projectcontour.io
 ```console
-k apply -f 04-proxy-include-fosdem.yaml
-k get httpproxy -A
+kubectl apply -f 04-proxy-include-fosdem.yaml
+kubectl get httpproxy -A
 ```
 
 ### Change the curl to /fosdem so we can follow the canary deployment(or Blue/Green)
@@ -48,25 +48,25 @@ while true; do curl -s local.projectcontour.io/fosdem|grep FOSDEM ; sleep 0.2 ; 
 
 ## Deploy web-v2 for fosdem
 ```console
-k apply -f 05-fosdem-v2.yaml
+kubectl apply -f 05-fosdem-v2.yaml
 ```
 
 ## Prep for canary or blue green
 ```console
-k apply -f 06-add-fosdem-v2.yaml
+kubectl apply -f 06-add-fosdem-v2.yaml
 ```
 
 ## Redistribiute the traffic 90/10%, 50/50 , 10/90 , 100% over to web-v2
 ```console
-k apply -f 07-90-10.yaml
-k apply -f 08-50-50.yaml
-k apply -f 09-10-90.yaml
-k apply -f 10-v2-only.yaml
+kubectl apply -f 07-90-10.yaml
+kubectl apply -f 08-50-50.yaml
+kubectl apply -f 09-10-90.yaml
+kubectl apply -f 10-v2-only.yaml
 ```
 
 ## Rollback to web-v1
 ```console
-k apply -f 11-rollback.yaml
+kubectl apply -f 11-rollback.yaml
 ```
 
 ## Clean up
